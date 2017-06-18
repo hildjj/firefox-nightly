@@ -2,16 +2,19 @@ FROM ubuntu:devel
 LABEL maintainer "Joe Hildebrand <joe-github@cursive.net>"
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+	consolekit \
 	dirmngr \
 	gnupg \
 	ca-certificates \
-	dbus \
+	dbus-x11 \
 	fonts-dejavu fonts-liberation \
 	hicolor-icon-theme \
 	libasound2 \
 	libgl1-mesa-dri \
 	libgl1-mesa-glx \
 	locales \
+	pulseaudio \
+	pulseaudio-utils \
 	xauth \
 	--no-install-recommends \
 && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
@@ -23,6 +26,13 @@ RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys b34505ea326feaea07e
 	&& apt-get update \
 	&& apt-get install -y \
 	firefox-trunk \
-	&& apt-get purge -y xul-ext-ubufox
+	&& apt-get purge -y xul-ext-ubufox \
+	&& addgroup --gid 500 firefox \
+	&& adduser --disabled-login --uid 500 --gid 500 --gecos 'Firefox User' firefox \
+  && service dbus start
+
+ENV HOME /home/firefox
+USER firefox
 
 ENTRYPOINT ["firefox-trunk"]
+CMD ["https://github.com/hildjj/firefox-nightly-docker"]

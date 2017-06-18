@@ -11,13 +11,21 @@ COOKIE=`xauth list :0 | awk '{print $3}'`
 mkdir -p $TDIR
 touch $XAUTH
 xauth -f $XAUTH add $IP:0 . $COOKIE
-#xauth add $IP:0 . $COOKIE
+
+if hash pactl 2>/dev/null; then
+  pactl load-module module-esound-protocol-tcp > /dev/null
+  pactl load-module module-native-protocol-tcp > /dev/null
+  PULSE_SERVER=$IP
+else
+  echo "to enable sound: 'brew install pulseaudio'"
+fi
+
 
 docker run --name firefox-nightly -it --rm \
   -v $TDIR:$TDIR \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $HOME/.config/pulse/cookie:/home/firefox/.config/pulse/cookie \
   -e DISPLAY=$IP:0 \
+  -e PULSE_SERVER=$PULSE_SERVER \
   -e XAUTHORITY=$XAUTH \
   firefox-nightly "$@"
-
-#  --entrypoint bash \
