@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# start X server, and wait for it to come up enough to answer a query
+(xdpyinfo > /dev/null) || exit 1
+
+IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+TDIR=/tmp/firefox-nightly
+XAUTH=$TDIR/.Xauthority
+COOKIE=`xauth list :0 | awk '{print $3}'`
+
+mkdir -p $TDIR
+touch $XAUTH
+xauth -f $XAUTH add $IP:0 . $COOKIE
+#xauth add $IP:0 . $COOKIE
+
+docker run --name firefox-nightly -it --rm \
+  -v $TDIR:$TDIR \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -e DISPLAY=$IP:0 \
+  -e XAUTHORITY=$XAUTH \
+  firefox-nightly "$@"
+
+#  --entrypoint bash \
