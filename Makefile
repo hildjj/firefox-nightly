@@ -16,6 +16,9 @@ push:
 	docker tag ${TAG} ${TAG}:latest
 	docker push ${TAG}
 
+clean:
+	$(RM) -r /tmp/firefox-nightly
+
 .build_date: FORCE
 	echo ${BUILD_DATE} > .build_date
 
