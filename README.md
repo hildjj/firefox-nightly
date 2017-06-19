@@ -12,4 +12,6 @@ The script is optimized to work on an OSX host, but may work on other host opera
 
 * `git clone https://github.com/hildjj/firefox-nightly-docker.git`
 * `cd firefox-nightly-docker`
-* `./firefox-nightly`
+* `./firefox-nightly [URL]`
+
+[Docker Hub](https://hub.docker.com/r/hildjj/firefox-nightly/)
