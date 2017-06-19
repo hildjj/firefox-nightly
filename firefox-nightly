@@ -20,12 +20,11 @@ else
   echo "to enable sound: 'brew install pulseaudio'"
 fi
 
-
 docker run --name firefox-nightly -it --rm \
   -v $TDIR:$TDIR \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v $HOME/.config/pulse/cookie:/home/firefox/.config/pulse/cookie \
+  -v $HOME/.config/pulse/cookie:$TDIR/.config/pulse/cookie \
   -e DISPLAY=$IP:0 \
   -e PULSE_SERVER=$PULSE_SERVER \
   -e XAUTHORITY=$XAUTH \
-  firefox-nightly "$@"
+  --user $UID:$GID \
+  hildjj/firefox-nightly:latest "$@"

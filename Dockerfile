@@ -26,13 +26,12 @@ RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys b34505ea326feaea07e
 	&& apt-get update \
 	&& apt-get install -y \
 	firefox-trunk \
-	&& apt-get purge -y xul-ext-ubufox \
-	&& addgroup --gid 500 firefox \
-	&& adduser --disabled-login --uid 500 --gid 500 --gecos 'Firefox User' firefox \
-  && service dbus start
+	&& apt-get purge -y xul-ext-ubufox
 
-ENV HOME /home/firefox
-USER firefox
+RUN service dbus start
+
+ENV HOME /tmp/firefox-nightly
+WORKDIR /tmp/firefox-nightly
 
 ENTRYPOINT ["firefox-trunk"]
 CMD ["https://github.com/hildjj/firefox-nightly-docker"]
