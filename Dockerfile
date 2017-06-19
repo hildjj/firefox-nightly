@@ -7,7 +7,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 	gnupg \
 	ca-certificates \
 	dbus-x11 \
-	fonts-dejavu fonts-liberation \
+	fonts-dejavu fonts-liberation fonts-noto \
 	hicolor-icon-theme \
 	libasound2 \
 	libgl1-mesa-dri \
@@ -19,6 +19,11 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 	--no-install-recommends \
 && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
 && dbus-uuidgen > /etc/machine-id
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ADA83EDC62D7EDF8 \
+	&& echo "deb http://ppa.launchpad.net/eosrei/fonts/ubuntu devel main" >> /etc/apt/sources.list.d/eosrei-ubuntu-fonts-artful.list \
+	&& apt-get update \
+	&& apt-get install -y fonts-emojione-svginot
 
 ARG BUILD_DATE=1
 RUN	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys b34505ea326feaea07e3618def4186fe247510be \
