@@ -1,6 +1,6 @@
 Run the [Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/) build of Firefox for Linux in Docker
 
-The script is optimized to work on an OSX host, but may work on other host operationg systems adequately.
+The script is optimized to work on an OSX host, but may work on other host operating systems adequately.
 
 ## Pre-requisites
 
