@@ -16,5 +16,7 @@ push:
 	docker tag ${TAG} ${TAG}:latest
 	docker push ${TAG}
 
-.build_date:
+.build_date: FORCE
 	echo ${BUILD_DATE} > .build_date
+
+FORCE:
