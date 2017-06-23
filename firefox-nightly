@@ -22,10 +22,25 @@ else
   echo "to enable sound: 'brew install pulseaudio'"
 fi
 
+# Pull in all relevant environment variables
+# e.g.:
+# NSPR_LOG_MODULES=mozStorage:4 ./firefox-nightly
+moz_env=''
+for i in $( env | grep "^MOZ_" ); do
+  moz_env+=" -e $i"
+done
+for i in $( env | grep "^NSS_" ); do
+  moz_env+=" -e $i"
+done
+for i in $( env | grep "^NSPR_" ); do
+  moz_env+=" -e $i"
+done
+
 docker run --name firefox-nightly -it --rm \
   -v $TDIR:$TDIR \
   -e DISPLAY=$IP:0 \
   -e PULSE_SERVER=$PULSE_SERVER \
   -e XAUTHORITY=$XAUTH \
-  --user $UID:$GID \
+  --user $UID \
+  $moz_env \
   hildjj/firefox-nightly:latest "$@"
