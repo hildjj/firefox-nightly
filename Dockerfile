@@ -1,10 +1,12 @@
-FROM ubuntu:devel
+FROM ubuntu:bionic
 LABEL maintainer "Joe Hildebrand <joe-github@cursive.net>"
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+	apt-transport-https \
 	bzip2 \
+	build-essential \
 	ca-certificates \
-	consolekit \
+	clang \
 	dbus-x11 \
 	dirmngr \
 	fonts-dejavu \
@@ -49,25 +51,27 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 	lsb-release \
 	pulseaudio \
 	pulseaudio-utils \
+	software-properties-common \
 	wget \
 	xauth \
 	--no-install-recommends \
 && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
 && dbus-uuidgen > /etc/machine-id
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ADA83EDC62D7EDF8 \
-	&& echo "deb http://ppa.launchpad.net/eosrei/fonts/ubuntu devel main" >> /etc/apt/sources.list.d/eosrei-ubuntu-fonts-artful.list \
-	&& apt-get update \
-	&& apt-get install -y fonts-emojione-svginot
+RUN apt-add-repository ppa:eosrei/fonts && apt-get update && apt-get install -y fonts-twemoji-svginot
 
 RUN service dbus start
 WORKDIR /tmp
+
+RUN wget -O- https://deb.nodesource.com/setup_8.x | bash - \
+  && apt-get install -y nodejs
 
 ARG BUILD_DATE=1
 RUN wget -q -O nightly.tar.bz 'https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US' \
 	&& tar xjf nightly.tar.bz \
 	&& rm -f nightly.tar.bz
 
+EXPOSE 2828
 ENV HOME /tmp/firefox-nightly
 WORKDIR /tmp/firefox-nightly
 
