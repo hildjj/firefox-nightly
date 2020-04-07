@@ -10,7 +10,8 @@ The script is optimized to work on an OSX host, but may work on other host opera
 
 ## Running
 
-* Start XQuartz once, and ensure that "Preferences/Security/Allow connections from network clients" is set.  If you would prefer to do this from the command line, make sure XQuartz *isn't* running, then `defaults write org.macosforge.xquartz.X11 nolisten_tcp 0`
+* Start XQuartz once (`open -a XQuartz`), and ensure that "Preferences/Security/Allow connections from network clients" is set.  If you would prefer to do this from the command line, make sure XQuartz *isn't* running, then `defaults write org.macosforge.xquartz.X11 nolisten_tcp 0`
+* You'll probably want to reboot here to ensure that your DISPLAY variable gets set correctly by XQuartz.
 * `git clone https://github.com/hildjj/firefox-nightly-docker.git`
 * `cd firefox-nightly-docker`
 * `./firefox-nightly [URL]`

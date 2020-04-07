@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:latest
 LABEL maintainer "Joe Hildebrand <joe-github@cursive.net>"
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
@@ -58,13 +58,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 && update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX \
 && dbus-uuidgen > /etc/machine-id
 
-RUN apt-add-repository ppa:eosrei/fonts && apt-get update && apt-get install -y fonts-twemoji-svginot
+RUN apt-add-repository -y ppa:eosrei/fonts && apt-get update && apt-get install -y fonts-twemoji-svginot
 
 RUN service dbus start
 WORKDIR /tmp
 
-RUN wget -O- https://deb.nodesource.com/setup_8.x | bash - \
-  && apt-get install -y nodejs
+RUN (wget -O- https://deb.nodesource.com/setup_13.x | bash -) && apt-get install -y nodejs
 
 ARG BUILD_DATE=1
 RUN wget -q -O nightly.tar.bz 'https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US' \
